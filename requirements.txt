@@ -1,29 +1,40 @@
+# Core framework
 streamlit==1.38.0
 
+# Data handling
 pandas==2.2.2
 numpy==1.26.4
 
+# Machine Learning / Predictions
 scikit-learn==1.5.1
 joblib==1.4.2
 
+# Visualization
 matplotlib==3.9.2
 plotly==5.24.0
 
+# Database
 sqlalchemy==2.0.34
-psycopg2-binary==2.9.9
+# psycopg2-binary==2.9.9   # Commented out - only uncomment if using PostgreSQL
+
+# OCR and Image Processing
 pytesseract==0.3.13
 Pillow==10.4.0
-opencv-python==4.10.0.84
+# opencv-python==4.10.0.84  # Commented out - causes issues on some systems
 
+# PDF Handling
 PyPDF2==3.0.1
 pypdf==4.3.1
 pdfplumber==0.11.3
 
-
+# Utilities
 requests==2.32.3
 python-dotenv==1.0.1
 
+# Authentication & Security
 streamlit-authenticator==0.3.2
 bcrypt==4.2.0
 
-
+# Additional useful packages for medical apps
+qrcode>=7.4.2
+python-dateutil>=2.8.2
