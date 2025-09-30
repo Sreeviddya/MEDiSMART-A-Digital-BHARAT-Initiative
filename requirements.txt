@@ -9,11 +9,7 @@ PyPDF2
 python-docx
 pytesseract
 opencv-python
-tesseract-ocr
-libgl1
-libsm6
-libxext6
-libxrender1
+
 
 
 
