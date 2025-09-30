@@ -8,6 +8,8 @@ geopy
 PyPDF2
 python-docx
 pytesseract
+opencv-python
+
 
 
 
