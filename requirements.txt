@@ -5,6 +5,7 @@ plotly
 folium
 streamlit_folium
 geopy
+PyPDF2
 
 
 
