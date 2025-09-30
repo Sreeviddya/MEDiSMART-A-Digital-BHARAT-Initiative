@@ -3,5 +3,6 @@ pandas
 scikit-learn
 plotly
 folium
+streamlit_folium
 
 
