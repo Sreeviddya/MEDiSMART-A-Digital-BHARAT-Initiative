@@ -191,7 +191,6 @@ import specialist_consultation
 import digital_health_records
 import ai_health_bot
 import hospital_directory
-import e_prescription
 import free_health_camps
 import health_schemes_integration
 import organ_donation_registry
@@ -658,3 +657,4 @@ elif st.session_state.current_page == "health_schemes_integration":
 elif st.session_state.current_page == "citizen_feedback":
 
     feedback.show_page()
+
