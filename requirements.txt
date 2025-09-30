@@ -1,4 +1,7 @@
 streamlit
-   pandas
-   scikit-learn
-   plotly
+pandas
+scikit-learn
+plotly
+folium
+
+
