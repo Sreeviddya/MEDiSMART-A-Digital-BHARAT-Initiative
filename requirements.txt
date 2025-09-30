@@ -8,7 +8,7 @@ geopy
 PyPDF2
 python-docx
 pytesseract
-opencv-python-headless==4.5.5.64
+opencv-python==4.5.5.64
 
 
 
