@@ -4,5 +4,8 @@ scikit-learn
 plotly
 folium
 streamlit_folium
+geodesic
+geopy
+
 
 
