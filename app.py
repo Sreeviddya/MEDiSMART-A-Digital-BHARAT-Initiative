@@ -181,7 +181,6 @@ import checkup_corner
 import about
 import contact
 import health_tips
-import database_manager
 import faq
 import emergency
 import blood_donation
@@ -657,4 +656,5 @@ elif st.session_state.current_page == "health_schemes_integration":
     health_schemes_integration.show_page()
 
 elif st.session_state.current_page == "citizen_feedback":
+
     feedback.show_page()
