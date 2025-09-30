@@ -8,8 +8,9 @@ geopy
 PyPDF2
 python-docx
 pytesseract
-opencv-python
+opencv-python-headless==4.5.5.64
 tesseract-ocr
+
 
 
 
