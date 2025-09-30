@@ -194,7 +194,6 @@ import hospital_directory
 import free_health_camps
 import health_schemes_integration
 import organ_donation_registry
-import e_prescription
 
 def placeholder_page():
     st.title("This is a placeholder page")
@@ -658,5 +657,6 @@ elif st.session_state.current_page == "health_schemes_integration":
 elif st.session_state.current_page == "citizen_feedback":
 
     feedback.show_page()
+
 
 
