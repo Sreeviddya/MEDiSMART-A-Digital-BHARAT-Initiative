@@ -1,5 +1,13 @@
 import streamlit as st
 import json
+import sys
+import config
+
+# Add modules directory to sys.path so all page imports work smoothly
+if str(config.MODULES_DIR) not in sys.path:
+    sys.path.insert(0, str(config.MODULES_DIR))
+import streamlit as st
+import json
 
 # --- Page config ---
 # st.set_page_config() MUST be the very first Streamlit command.
@@ -164,36 +172,38 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# --- Import other pages AFTER the set_page_config call ---
-import login
-import register
-import guest
-import dashboard
-import personal_dashboard
-import bp_diagnosis
-import diabetes
-import heart_disease
-import parkinsons
-import lung_cancer
-import smart_doctor
-import symptoms_guide
-import checkup_corner
-import about
-import contact
-import health_tips
-import faq
-import emergency
-import blood_donation
-import feedback
-import appointment_reminders
-import ambulance_tracking
-import specialist_consultation
-import digital_health_records
-import ai_health_bot
-import hospital_directory
-import free_health_camps
-import health_schemes_integration
-import organ_donation_registry
+# --- Import other pages from modules/ AFTER the set_page_config call ---
+from modules import (
+    login,
+    register,
+    guest,
+    dashboard,
+    personal_dashboard,
+    bp_diagnosis,
+    diabetes,
+    heart_disease,
+    parkinsons,
+    lung_cancer,
+    smart_doctor,
+    symptoms_guide,
+    checkup_corner,
+    about,
+    contact,
+    health_tips,
+    faq,
+    emergency,
+    blood_donation,
+    feedback,
+    appointment_reminders,
+    ambulance_tracking,
+    specialist_consultation,
+    digital_health_records,
+    ai_health_bot,
+    hospital_directory,
+    free_health_camps,
+    health_schemes_integration,
+    organ_donation_registry,
+)
 
 def placeholder_page():
     st.title("This is a placeholder page")
@@ -395,7 +405,7 @@ def show_navbar():
     col1, col2, col3 = st.columns([1, 2, 1.5]) 
     
     with col1:
-        st.image("logo.jpg", width=160) # Adjusted logo size
+        st.image(str(config.LOGO_PATH), width = 160) # Adjusted logo size
     
     with col2:
         st.markdown(f"<h2 class='main-title'>{lang_data['title']}</h2>", unsafe_allow_html=True)
