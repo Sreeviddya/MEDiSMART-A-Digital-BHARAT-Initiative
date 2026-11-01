@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+from utils.auth import register_account
 
 def go_to_login_page():
     # The button click already triggers a rerun, so we only need to set the state.
@@ -61,15 +62,29 @@ def show_page():
         st.subheader("Verify Your Mobile Number")
         st.info(f"An OTP has been sent to your mobile number: **{st.session_state.reg_mobile}**")
         st.markdown(f"**For demo purposes, your OTP is:** `{st.session_state.generated_otp}`")
-        
+
         entered_otp = st.text_input("Enter the OTP", max_chars=6)
-        
+
         if st.button("Verify OTP"):
             if entered_otp == str(st.session_state.generated_otp):
-                st.success("OTP verified successfully! Your account has been created.")
-                st.balloons()
-                st.session_state.reg_step = "done"
-                st.rerun()
+                # Save newly registered account to SQLite database
+                success, msg = register_account(
+                    username=st.session_state.reg_username,
+                    password=st.session_state.reg_password,
+                    full_name=st.session_state.reg_full_name,
+                    mobile=st.session_state.reg_mobile,
+                    email=st.session_state.get("reg_email", ""),
+                    aadhaar=st.session_state.get("aadhaar_no", ""),
+                    dob=st.session_state.get("reg_dob", ""),
+                    gender=st.session_state.get("reg_gender", ""),
+                )
+                if success:
+                    st.success("OTP verified successfully! Your account has been saved.")
+                    st.balloons()
+                    st.session_state.reg_step = "done"
+                    st.rerun()
+                else:
+                    st.error(f"Registration failed: {msg}")
             else:
                 st.error("Incorrect OTP. Please try again.")
 

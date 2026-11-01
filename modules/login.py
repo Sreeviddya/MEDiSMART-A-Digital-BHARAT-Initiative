@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+from utils.auth import authenticate_user, get_user_by_mobile
 
 # --- Demo User Configuration ---
 DEMO_USERNAME = "ViddyaKS"
@@ -25,7 +26,6 @@ def show_page():
     if "username" not in st.session_state:
         st.session_state.username = None
 
-
     # --- Login Method Selection ---
     st.session_state.login_method = st.radio(
         "Choose Login Method:",
@@ -39,15 +39,16 @@ def show_page():
             with st.form("login_form_username"):
                 username = st.text_input("Username")
                 password = st.text_input("Password", type="password")
-                
                 submit_button = st.form_submit_button("Login")
 
             if submit_button:
-                if username == DEMO_USERNAME and password == DEMO_PASSWORD:
+                user = authenticate_user(username, password)
+                if user:
                     st.session_state.login_step = "verify_otp"
                     st.session_state.login_otp = random.randint(1000, 9999)
-                    st.session_state.username = username # Save the username
-                    st.success("Please check your mobile. A 4-digit OTP has been sent.")
+                    st.session_state.username = user["username"]
+                    st.session_state.user_mobile = user.get("mobile", DEMO_MOBILE)
+                    st.success("Credentials verified. A 4-digit OTP has been sent.")
                     st.rerun()
                 else:
                     st.error("Invalid username or password. Please try again.")
@@ -55,24 +56,25 @@ def show_page():
         elif st.session_state.login_method == "Mobile Number":
             with st.form("login_form_mobile"):
                 mobile = st.text_input("Mobile Number", max_chars=10)
-                
                 submit_button = st.form_submit_button("Login")
 
             if submit_button:
-                if mobile == DEMO_MOBILE:
+                user = get_user_by_mobile(mobile)
+                if user:
                     st.session_state.login_step = "verify_otp"
                     st.session_state.login_otp = random.randint(1000, 9999)
-                    # For this demo, we'll use a placeholder username for mobile login
-                    st.session_state.username = "MobileUser" 
-                    st.success("Please check your mobile. A 4-digit OTP has been sent.")
+                    st.session_state.username = user["username"]
+                    st.session_state.user_mobile = mobile
+                    st.success("Mobile number verified. A 4-digit OTP has been sent.")
                     st.rerun()
                 else:
-                    st.error("Invalid mobile number. Please try again.")
+                    st.error("No account found with this mobile number. Please register first.")
 
     # --- OTP Verification Step ---
     elif st.session_state.login_step == "verify_otp":
         st.subheader("Verify Your Mobile Number")
-        st.info(f"An OTP has been sent to your mobile number: **{DEMO_MOBILE}**")
+        target_mobile = st.session_state.get("user_mobile", DEMO_MOBILE)
+        st.info(f"An OTP has been sent to your mobile number: **{target_mobile}**")
         st.markdown(f"**For demo purposes, your OTP is:** `{st.session_state.login_otp}`")
 
         entered_otp = st.text_input("Enter the OTP", max_chars=4)
