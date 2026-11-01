@@ -6,21 +6,17 @@ import config
 
 # --- Helper functions and data loading ---
 
-# Check if the required model file exists before loading
-model_path = config.MODELS_DIR / "svc.pkl"
-if not os.path.exists(model_path):
-    st.error(
-        "Error: The required model file 'svc.pkl' was not found. "
-        "Please make sure it is in the same directory as this script."
-    )
-    st.stop()
-
-# Load the trained model
-try:
-    model = pickle.load(open(model_path, "rb"))
-except Exception as e:
-    st.error(f"Error loading the model file: {e}")
-    st.stop()
+@st.cache_resource
+def load_doctor_model():
+    """Loads and caches the SVC model in memory to prevent repeated disk I/O."""
+    model_path = config.MODELS_DIR / "svc.pkl"
+    if not model_path.exists():
+        return None
+    try:
+        with open(model_path, "rb") as f:
+            return pickle.load(f)
+    except Exception as e:
+        return None
 
 # Symptom and Disease Mapping
 # Corrected Symptom List with 132 features to match the model's expectation
@@ -70,6 +66,10 @@ def predict_disease(selected_symptoms):
     """
     Creates a symptom vector and predicts the disease using the loaded model.
     """
+    model = load_doctor_model()
+    if model is None:
+        st.error("The disease prediction model is currently unavailable. Please check models/svc.pkl.")
+        return "Model Unavailable"
     # Create a vector of zeros with the length of the full symptom list
     symptoms_vector = np.zeros(len(symptom_list))
     

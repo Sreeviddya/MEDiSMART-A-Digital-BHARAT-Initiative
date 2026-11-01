@@ -4,6 +4,22 @@ import pickle
 import os
 import config
 
+@st.cache_resource
+def load_parkinsons_model():
+    """Loads and caches the Parkinson's model and scaler."""
+    model_path = config.MODELS_DIR / "parkinsons_model.pkl"
+    scaler_path = config.MODELS_DIR / "scaler.pkl"
+    if not model_path.exists() or not scaler_path.exists():
+        return None, None
+    try:
+        with open(model_path, "rb") as f:
+            model = pickle.load(f)
+        with open(scaler_path, "rb") as f:
+            scaler = pickle.load(f)
+        return model, scaler
+    except Exception:
+        return None, None
+
 # --- Page Content for Parkinson's Diagnosis ---
 def show_page():
     st.title("Parkinson's Disease Diagnosis")
@@ -11,23 +27,9 @@ def show_page():
     st.write("Please fill out the form below with your vocal metrics to get a prediction on your Parkinson's status.")
     st.markdown("Note: This tool is for informational purposes only. Always consult a healthcare professional for a final diagnosis.")
 
-    # Check if the required model files exist
-    model_path = config.MODELS_DIR / "parkinsons_model.pkl"
-    scaler_path = config.MODELS_DIR / "scaler.pkl"
-    
-    if not os.path.exists(model_path) or not os.path.exists(scaler_path):
-        st.error(
-            "Error: Model or scaler files not found. "
-            "Please ensure `parkinsons_model.pkl` and `scaler.pkl` are in the same directory as this script."
-        )
-        return
-
-    # Load the trained model and scaler
-    try:
-        model = pickle.load(open(model_path, "rb"))
-        scaler = pickle.load(open(scaler_path, "rb"))
-    except Exception as e:
-        st.error(f"Error loading model files: {e}")
+    model, scaler = load_parkinsons_model()
+    if model is None or scaler is None:
+        st.error("Error: Parkinson's model or scaler files could not be loaded from models/.")
         return
 
     # Expected feature names based on the model training
