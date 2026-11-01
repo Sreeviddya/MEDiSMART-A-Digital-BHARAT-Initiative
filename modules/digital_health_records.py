@@ -16,11 +16,12 @@ import PyPDF2
 from docx import Document
 import pytesseract
 from PIL import Image
+import config
 
 def show_page():
     # Database setup
     def init_database():
-        conn = sqlite3.connect('health_records.db')
+        conn = sqlite3.connect(str(config.DB_PATH))
         c = conn.cursor()
        
         # Users table

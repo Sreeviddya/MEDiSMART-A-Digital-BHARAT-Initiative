@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import os
+import config
 
 # --- Page Content for Parkinson's Diagnosis ---
 def show_page():
@@ -11,8 +12,8 @@ def show_page():
     st.markdown("Note: This tool is for informational purposes only. Always consult a healthcare professional for a final diagnosis.")
 
     # Check if the required model files exist
-    model_path = "parkinsons_model.pkl"
-    scaler_path = "scaler.pkl"
+    model_path = config.MODELS_DIR / "parkinsons_model.pkl"
+    scaler_path = config.MODELS_DIR / "scaler.pkl"
     
     if not os.path.exists(model_path) or not os.path.exists(scaler_path):
         st.error(

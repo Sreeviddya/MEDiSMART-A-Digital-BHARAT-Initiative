@@ -2,11 +2,12 @@ import streamlit as st
 import pickle
 import numpy as np
 import os
+import config
 
 # --- Helper functions and data loading ---
 
 # Check if the required model file exists before loading
-model_path = "svc.pkl"
+model_path = config.MODELS_DIR / "svc.pkl"
 if not os.path.exists(model_path):
     st.error(
         "Error: The required model file 'svc.pkl' was not found. "
